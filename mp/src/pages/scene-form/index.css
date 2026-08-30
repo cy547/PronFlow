@@ -6,7 +6,9 @@
 .fi Input {
   background: #f5f6f6;
   border-radius: 10px;
-  padding: 11px 13px;
+  height: 42px;
+  line-height: 42px;
+  padding: 0 13px;
   font-size: 14px;
   width: 100%;
   box-sizing: border-box;
