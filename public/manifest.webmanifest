@@ -1,0 +1,16 @@
+{
+  "name": "PronFlow · 开口说英语",
+  "short_name": "PronFlow",
+  "description": "专治口语失语：心里有中文，开口就是英文",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f4f6f5",
+  "theme_color": "#12b886",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

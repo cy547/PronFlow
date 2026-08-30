@@ -1,0 +1,54 @@
+.form-page { padding: 14px 14px 50px; }
+
+.fi { margin-bottom: 13px; display: flex; flex-direction: column; }
+.fi2 { display: flex; gap: 10px; }
+.fi2 .fi { flex: 1; }
+
+.fl { font-size: 12px; color: #7a828a; font-weight: 600; margin-bottom: 5px; }
+
+.fi Input, .fi Textarea {
+  background: #f5f6f6;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 20px;
+}
+
+.fi Textarea { min-height: 40px; line-height: 1.5; }
+
+.ftip { font-size: 11px; color: #7a828a; margin-top: 4px; line-height: 1.5; display: block; }
+.ftip.center { text-align: center; }
+
+.pills { display: flex; gap: 6px; flex-wrap: wrap; }
+.pill { padding: 5px 12px; border-radius: 14px; background: #f1f3f2; color: #7a828a; font-size: 12.5px; }
+.pill.on { background: #e6f7f1; color: #0e9e73; font-weight: 700; }
+
+.vrow { display: flex; gap: 6px; margin-bottom: 6px; align-items: center; }
+.vlevel { width: 36px; font-size: 10.5px; color: #7a828a; text-align: center; background: #f1f3f2; border-radius: 6px; padding: 6px 0; flex-shrink: 0; }
+.vrow Input { flex: 1; padding: 8px 9px; font-size: 12.5px; min-width: 0; }
+
+.save-btn { margin-top: 6px; background: #12b886; color: #fff; border-radius: 22px; height: 44px; line-height: 44px; font-size: 15px; font-weight: 700; }
+.save-btn[disabled] { opacity: 0.4; }
+
+.sug-box {
+  margin-top: 6px;
+  background: #fff;
+  border: 1px solid #edf0ef;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(26,29,33,0.08);
+}
+.sug-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid #f1f3f2;
+}
+.sug-row:last-child { border-bottom: none; }
+.sug-w { font-size: 14px; font-weight: 700; flex-shrink: 0; }
+.sug-zh { flex: 1; font-size: 12px; color: #7a828a; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sug-empty { padding: 12px; font-size: 12px; color: #7a828a; text-align: center; display: block; }
+.tag { font-size: 10.5px; background: #f1f3f2; color: #7a828a; border-radius: 4px; padding: 1px 5px; flex-shrink: 0; }

@@ -1,0 +1,92 @@
+.home { padding: 22px 16px 40px; }
+
+.head { display: flex; flex-direction: column; }
+
+.title { font-size: 24px; font-weight: 800; color: #12b886; letter-spacing: 0.5px; }
+
+.slogan { margin-top: 4px; font-size: 13px; color: #7a828a; }
+
+.home-search {
+  margin-top: 14px;
+  background: #fff;
+  border-radius: 21px;
+  padding: 11px 16px;
+  box-shadow: 0 2px 10px rgba(26, 29, 33, 0.05);
+  color: #7a828a;
+  font-size: 13.5px;
+}
+
+.sec { display: block; margin: 20px 0 10px; font-size: 15px; font-weight: 700; }
+.sec-more { font-size: 12px; color: #7a828a; font-weight: 400; }
+
+.grid { display: flex; flex-wrap: wrap; justify-content: space-between; }
+
+.scard {
+  width: 166px;
+  background: #fff;
+  border-radius: 14px;
+  padding: 13px 14px;
+  box-shadow: 0 2px 10px rgba(26, 29, 33, 0.05);
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.row { display: flex; justify-content: space-between; align-items: center; }
+.icon { font-size: 25px; }
+.pin { font-size: 12px; }
+
+.scard .name {
+  margin-top: 8px;
+  font-size: 15.5px;
+  font-weight: 700;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.meta { margin-top: 2px; font-size: 11px; color: #7a828a; display: block; }
+
+.scard-menu {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7a828a;
+  font-size: 15px;
+}
+
+.scard.add {
+  background: transparent;
+  box-shadow: none;
+  border: 1.5px dashed #c9d1ce;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 96px;
+}
+
+.plus {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #e6f7f1;
+  color: #0e9e73;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-t { margin-top: 6px; font-size: 12.5px; color: #7a828a; }
+
+.foot { margin-top: 20px; text-align: center; }
+
+.fs12 { font-size: 12px; }
+.sub { color: #7a828a; }

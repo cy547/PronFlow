@@ -1,0 +1,29 @@
+{
+  "name": "pronflow",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "dict": "node scripts/build-dict.mjs",
+    "package": "node scripts/make-deploy-zip.cjs",
+    "sync-shared": "node scripts/sync-shared.cjs",
+    "gen-dict-edge": "node scripts/gen-dict-edge.mjs"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "cmu-pronouncing-dictionary": "^3.0.0",
+    "ecdict": "^0.0.4",
+    "jszip": "^3.10.1",
+    "typescript": "~5.6.3",
+    "vite": "^5.4.11"
+  }
+}

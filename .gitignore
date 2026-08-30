@@ -1,0 +1,22 @@
+# 依赖
+node_modules/
+mp/node_modules/
+
+# 构建产物
+dist/
+mp/dist/
+mp/.swc/
+
+# 部署包
+*.zip
+
+# 本地日志与临时文件
+*.log
+.edgeone/
+.DS_Store
+
+# 环境变量与密钥（如有）
+.env
+*.key
+.zcode/
+tsconfig.tsbuildinfo

@@ -1,0 +1,29 @@
+{
+    "miniprogramRoot": "dist/",
+    "projectname": "pronflow-mp",
+    "appid": "wx25ced5575584f14e",
+    "setting": {
+        "urlCheck": false,
+        "es6": false,
+        "enhance": false,
+        "postcss": false,
+        "minified": false,
+        "babelSetting": {
+            "ignore": [],
+            "disablePlugins": [],
+            "outputPath": ""
+        }
+    },
+    "compileType": "miniprogram",
+    "libVersion": "3.4.10",
+    "srcMiniprogramRoot": "dist/",
+    "packOptions": {
+        "ignore": [],
+        "include": []
+    },
+    "condition": {},
+    "editorSetting": {
+        "tabIndent": "insertSpaces",
+        "tabSize": 4
+    }
+}

@@ -1,0 +1,38 @@
+.dict-page { padding: 14px 14px 40px; }
+
+.sbar {
+  display: flex;
+  align-items: center;
+  padding: 4px 14px;
+  height: 44px;
+  border-radius: 22px;
+}
+.sbar Input { flex: 1; font-size: 14px; }
+.go { color: #0e9e73; font-weight: 700; font-size: 14px; }
+
+.dmeta { margin: 10px 2px; }
+
+.drow { margin-bottom: 9px; padding: 11px 13px; }
+.drow-main { flex: 1; min-width: 0; }
+.d-w { font-size: 15.5px; font-weight: 700; display: block; }
+.d-ipa { font-size: 11.5px; color: #7a828a; display: block; margin-top: 1px; }
+.d-zh {
+  font-size: 12.5px; color: #4a5057; margin-top: 3px; display: block;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.drow { display: flex; align-items: center; gap: 10px; }
+.drow-acts { display: flex; flex-direction: column; align-items: center; gap: 7px; }
+
+.ddetail {
+  margin-top: 9px;
+  background: #f7f8f8;
+  border-radius: 9px;
+  padding: 9px 11px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.tag { font-size: 11px; background: #ececec; color: #4a5057; border-radius: 5px; padding: 2px 6px; }
+.full { font-size: 12.5px; width: 100%; line-height: 1.6; color: #33393f; }
+
+.loading, .more { text-align: center; color: #7a828a; font-size: 13px; padding: 12px 0; }

@@ -1,0 +1,55 @@
+.sform-page { padding: 14px 14px 50px; }
+
+.fi { margin-bottom: 13px; display: flex; flex-direction: column; }
+.fl { font-size: 12px; color: #7a828a; font-weight: 600; margin-bottom: 5px; }
+
+.fi Input {
+  background: #f5f6f6;
+  border-radius: 10px;
+  padding: 11px 13px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.icons { display: flex; flex-wrap: wrap; gap: 7px; align-items: center; }
+.ic-item {
+  width: 38px;
+  height: 38px;
+  font-size: 19px;
+  border-radius: 10px;
+  background: #f5f6f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid transparent;
+}
+.ic-item.on { background: #e6f7f1; border-color: #12b886; }
+
+.ic-img-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: #e6f7f1;
+  border-radius: 10px;
+  padding: 4px 8px;
+}
+.ic-remove { font-size: 10.5px; color: #7a828a; }
+
+.ic-upload {
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1.5px dashed #c9d1ce;
+  color: #7a828a;
+  font-size: 12.5px;
+  display: flex;
+  align-items: center;
+}
+
+.ftip { font-size: 11px; color: #7a828a; margin-top: 4px; }
+.ftip.center { text-align: center; }
+
+.save-btn { margin-top: 8px; background: #12b886; color: #fff; border-radius: 22px; height: 44px; line-height: 44px; font-size: 15px; font-weight: 700; }
+.save-btn[disabled] { opacity: 0.4; }
