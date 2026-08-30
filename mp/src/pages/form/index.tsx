@@ -2,8 +2,8 @@ import { useRef, useState } from 'react'
 import { View, Text, Input, Textarea, Button } from '@tarojs/components'
 import Taro, { useRouter } from '@tarojs/taro'
 import type { Material, SentenceMaterial, SpokenLevel, VersionLevel } from '../../shared/types'
+import { DICT } from '../../data/dictData'
 import { actions, useUserData } from '../../store/useUserData'
-import { API_BASE } from '../../services/sync'
 import './index.css'
 
 interface Sug {
@@ -62,29 +62,33 @@ export default function FormPage() {
   const [brkText, setBrkText] = useState(editing && editing.type === 'sentence' ? toLines(editing.breakdown) : '')
   const [linking, setLinking] = useState(editing && editing.type === 'sentence' ? editing.linking ?? '' : '')
 
-  /* ---------- 词库联想（云端词典接口：自动带出词性/音标/释义） ---------- */
+  /* ---------- 词库联想（本地离线词典：自动带出词性/音标/释义） ---------- */
   const [sugs, setSugs] = useState<Sug[] | null>(null)
   const [sugFor, setSugFor] = useState<'en' | 'zh'>('en')
   const sugTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const querySugs = (text: string, from: 'en' | 'zh') => {
     setSugFor(from)
-    const q = text.trim()
+    const q = text.trim().toLowerCase()
     if (type === 'sentence' || !q) {
       setSugs(null)
       return
     }
     if (sugTimer.current) clearTimeout(sugTimer.current)
-    sugTimer.current = setTimeout(async () => {
-      try {
-        const res = await Taro.request({
-          url: `${API_BASE}/dict?q=${encodeURIComponent(q)}&limit=8`,
-        })
-        setSugs(res.data?.items ?? [])
-      } catch {
-        setSugs(null)
+    sugTimer.current = setTimeout(() => {
+      const hasZh = /[\u4e00-\u9fff]/.test(q)
+      const matched: Sug[] = []
+      for (const it of DICT) {
+        const w = it[0].toLowerCase()
+        let hit = false
+        if (hasZh) hit = it[4].includes(q)
+        else if (w === q || w.startsWith(q)) hit = true
+        else if (q.length >= 3 && it[4].toLowerCase().includes(q)) hit = true
+        if (hit) matched.push({ w: it[0], us: it[1], uk: it[2], pos: it[3], zh: it[4] })
+        if (matched.length >= 8) break
       }
-    }, 350)
+      setSugs(matched)
+    }, 250)
   }
 
   const pickDictWord = (d: Sug) => {

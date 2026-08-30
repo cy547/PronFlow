@@ -1,54 +1,79 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { View, Text, Input } from '@tarojs/components'
-import Taro, { useReachBottom } from '@tarojs/taro'
+import { useReachBottom } from '@tarojs/taro'
+import { DICT } from '../../data/dictData'
 import { actions, useUserData } from '../../store/useUserData'
 import { PlayButton } from '../../components/ui'
-import { API_BASE } from '../../services/sync'
+import { play } from '../../services/audio'
 import './index.css'
 
 interface DItem {
   w: string
-  us?: string
-  uk?: string
-  pos?: string
+  us: string
+  uk: string
+  pos: string
   zh: string
-  freq?: number
+  freq: number
+}
+
+const PAGE = 30
+
+/** 本地离线检索：中文→释义包含，英文→全等/前缀/释义包含 */
+function search(q: string, offset: number): { items: DItem[]; total: number } {
+  const query = q.trim().toLowerCase()
+  const hasZh = /[\u4e00-\u9fff]/.test(query)
+  let matched: DItem[] = []
+  if (!query) {
+    matched = DICT.map(toItem)
+  } else {
+    for (const it of DICT) {
+      const w = it[0].toLowerCase()
+      let hit = false
+      if (hasZh) hit = it[4].includes(query)
+      else if (w === query || w.startsWith(query)) hit = true
+      else if (query.length >= 3 && it[4].toLowerCase().includes(query)) hit = true
+      if (hit) matched.push(toItem(it))
+    }
+  }
+  return { items: matched.slice(offset, offset + PAGE), total: matched.length }
+}
+
+function toItem(it: (typeof DICT)[number]): DItem {
+  return { w: it[0], us: it[1], uk: it[2], pos: it[3], zh: it[4], freq: it[5] }
 }
 
 export default function DictPage() {
   const data = useUserData()
   const [q, setQ] = useState('')
+  const [query, setQuery] = useState('')
   const [items, setItems] = useState<DItem[]>([])
   const [total, setTotal] = useState<number | null>(null)
   const [offset, setOffset] = useState(0)
-  const [loading, setLoading] = useState(false)
   const [expanded, setExpanded] = useState<string | null>(null)
 
-  const load = async (query: string, off: number, append: boolean) => {
-    setLoading(true)
-    try {
-      const res = await Taro.request({
-        url: `${API_BASE}/dict?q=${encodeURIComponent(query)}&limit=30&offset=${off}`,
-        method: 'GET',
-      })
-      const itemsNew: DItem[] = res.data?.items ?? []
-      setTotal(res.data?.total ?? 0)
-      setItems((prev) => (append ? [...prev, ...itemsNew] : itemsNew))
-      setOffset(off + itemsNew.length)
-    } catch {
-      Taro.showToast({ title: '词库加载失败，请检查网络', icon: 'none' })
-    }
-    setLoading(false)
-  }
-
-  const run = (query: string) => {
-    setQ(query)
-    void load(query, 0, false)
+  const run = (text: string) => {
+    setQuery(text)
+    const r = search(text, 0)
+    setItems(r.items)
+    setTotal(r.total)
+    setOffset(PAGE)
   }
 
   useReachBottom(() => {
-    if (total != null && items.length < total && !loading) void load(q, offset, true)
+    if (total != null && items.length < total) {
+      const r = search(query, offset)
+      setItems((prev) => [...prev, ...r.items])
+      setTotal(r.total)
+      setOffset(offset + PAGE)
+    }
   })
+
+  const loadMore = () => {
+    const r = search(query, offset)
+    setItems((prev) => [...prev, ...r.items])
+    setTotal(r.total)
+    setOffset(offset + PAGE)
+  }
 
   const favOf = (w: string) => !!data.favorites[`dict:${w}`]
 
@@ -65,14 +90,16 @@ export default function DictPage() {
       </View>
 
       <View className="dmeta">
-        <Text className="sub fs12">{total != null ? `共 ${total} 个结果` : '输入单词或中文意思查询 · 支持双语'} </Text>
+        <Text className="sub fs12">
+          {total != null ? `共 ${total} 个结果` : '内置离线词典 · 输入单词或中文查询'} ｜ 点 ▶ 发音 · ☆ 收藏
+        </Text>
       </View>
 
-      {items.length === 0 && !loading && (
+      {items.length === 0 && (
         <View className="empty">
           <Text className="ic">📚</Text>
-          <Text className="t1">云端词典</Text>
-          <Text className="t2">输入查询后，点词条展开音标、释义{"\n"}点 ▶ 发音 · 点 ☆ 收藏进复习</Text>
+          <Text className="t1">{query ? '没找到相关词条' : '内置离线词典'}</Text>
+          <Text className="t2">{query ? '换个关键词试试' : '8000 高频词离线可查 · 点词条展开详情'}</Text>
         </View>
       )}
 
@@ -82,8 +109,11 @@ export default function DictPage() {
         return (
           <View className="drow card" key={d.w}>
             <View className="drow-main" onClick={() => setExpanded(open ? null : d.w)}>
-              <Text className="d-w">{d.w}</Text>
-              <Text className="d-ipa">{d.us || d.uk} {d.pos}</Text>
+              <Text className="d-w">
+                {d.w}
+                {d.freq >= 4 && <Text className="hot"> 热</Text>}
+              </Text>
+              <Text className="d-ipa">{(d.us || d.uk) ? `${d.us || d.uk}  ` : ''}{d.pos}</Text>
               <Text className="d-zh">{d.zh}</Text>
             </View>
             <View className="drow-acts">
@@ -100,18 +130,19 @@ export default function DictPage() {
             </View>
             {open && (
               <View className="ddetail">
-                {d.us && <Text className="tag" onClick={() => void 0}>美 {d.us}</Text>}
+                {d.us && <Text className="tag">美 {d.us}</Text>}
                 {d.uk && <Text className="tag">英 {d.uk}</Text>}
+                {d.freq > 0 && <Text className="tag">词频 {'★'.repeat(d.freq)}</Text>}
                 <Text className="full">{d.zh}</Text>
+                <Text className="tag tip2">离线词典 · 收藏后可进复习</Text>
               </View>
             )}
           </View>
         )
       })}
 
-      {loading && <Text className="loading">加载中…</Text>}
-      {total != null && items.length < total && !loading && (
-        <View className="more" onClick={() => void load(q, offset, true)}><Text>加载更多</Text></View>
+      {total != null && items.length < total && (
+        <View className="more" onClick={loadMore}><Text>加载更多（还剩 {total - items.length}）</Text></View>
       )}
     </View>
   )

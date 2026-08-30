@@ -10,7 +10,8 @@
     "dict": "node scripts/build-dict.mjs",
     "package": "node scripts/make-deploy-zip.cjs",
     "sync-shared": "node scripts/sync-shared.cjs",
-    "gen-dict-edge": "node scripts/gen-dict-edge.mjs"
+    "gen-dict-edge": "node scripts/gen-dict-edge.mjs",
+    "gen-dict-mp": "node scripts/gen-dict-mp.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",
