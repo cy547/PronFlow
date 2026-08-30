@@ -79,13 +79,15 @@ export default function FormPage() {
       const hasZh = /[\u4e00-\u9fff]/.test(q)
       const matched: Sug[] = []
       for (const it of DICT) {
-        const w = it[0].toLowerCase()
+        const w = it.w.toLowerCase()
         let hit = false
-        if (hasZh) hit = it[4].includes(q)
+        if (hasZh) hit = it.zh.includes(q)
         else if (w === q || w.startsWith(q)) hit = true
-        else if (q.length >= 3 && it[4].toLowerCase().includes(q)) hit = true
-        if (hit) matched.push({ w: it[0], us: it[1], uk: it[2], pos: it[3], zh: it[4] })
-        if (matched.length >= 8) break
+        else if (q.length >= 3 && it.zh.toLowerCase().includes(q)) hit = true
+        if (hit) {
+          matched.push({ w: it.w, us: it.us, uk: it.uk, pos: it.pos, zh: it.zh })
+          if (matched.length >= 8) break
+        }
       }
       setSugs(matched)
     }, 250)

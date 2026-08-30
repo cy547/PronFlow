@@ -24,22 +24,18 @@ function search(q: string, offset: number): { items: DItem[]; total: number } {
   const hasZh = /[\u4e00-\u9fff]/.test(query)
   let matched: DItem[] = []
   if (!query) {
-    matched = DICT.map(toItem)
+    matched = DICT.slice()
   } else {
     for (const it of DICT) {
-      const w = it[0].toLowerCase()
+      const w = it.w.toLowerCase()
       let hit = false
-      if (hasZh) hit = it[4].includes(query)
+      if (hasZh) hit = it.zh.includes(query)
       else if (w === query || w.startsWith(query)) hit = true
-      else if (query.length >= 3 && it[4].toLowerCase().includes(query)) hit = true
-      if (hit) matched.push(toItem(it))
+      else if (query.length >= 3 && it.zh.toLowerCase().includes(query)) hit = true
+      if (hit) matched.push(it)
     }
   }
   return { items: matched.slice(offset, offset + PAGE), total: matched.length }
-}
-
-function toItem(it: (typeof DICT)[number]): DItem {
-  return { w: it[0], us: it[1], uk: it[2], pos: it[3], zh: it[4], freq: it[5] }
 }
 
 export default function DictPage() {
