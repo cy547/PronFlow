@@ -1,6 +1,16 @@
-/* PronFlow Service Worker：离线缓存（应用壳 + 词库），版本升级自动清理 */
-const VERSION = 'pronflow-v2'
-const CORE = ['/', 'index.html', 'manifest.webmanifest', 'dict/dict.json', 'icons/icon-192.png', 'icons/icon-512.png']
+/* PronFlow Service Worker：离线缓存（应用壳 + 词库），版本升级自动清理
+ * 路径全部基于 registration.scope 计算，兼容根路径与子路径（GitHub Pages）部署 */
+const VERSION = 'pronflow-v3'
+const SCOPE = new URL(self.registration.scope)
+const BASE = SCOPE.pathname.endsWith('/') ? SCOPE.pathname : SCOPE.pathname + '/'
+const CORE = [
+  BASE,
+  BASE + 'index.html',
+  BASE + 'manifest.webmanifest',
+  BASE + 'dict/dict.json',
+  BASE + 'icons/icon-192.png',
+  BASE + 'icons/icon-512.png',
+].map((p) => new URL(p, SCOPE.origin).href)
 
 self.addEventListener('install', (e) => {
   e.waitUntil((async () => {
@@ -22,7 +32,7 @@ self.addEventListener('fetch', (e) => {
   const req = e.request
   if (req.method !== 'GET') return
   const url = new URL(req.url)
-  if (url.origin !== location.origin) return // 外部资源（有道发音）走网络
+  if (url.origin !== location.origin) return // 外部资源（有道/百度发音）走网络
 
   // 页面导航：网络优先，断网回退到缓存的 index.html（离线可用关键）
   if (req.mode === 'navigate') {
@@ -31,7 +41,11 @@ self.addEventListener('fetch', (e) => {
         return await fetch(req)
       } catch {
         const cache = await caches.open(VERSION)
-        return (await cache.match('index.html')) || (await cache.match('/')) || Response.error()
+        return (
+          (await cache.match(BASE + 'index.html')) ||
+          (await cache.match(BASE)) ||
+          Response.error()
+        )
       }
     })())
     return
@@ -41,7 +55,7 @@ self.addEventListener('fetch', (e) => {
   const cacheable =
     url.pathname.includes('/assets/') ||
     url.pathname.endsWith('/dict/dict.json') ||
-    url.pathname.startsWith('/icons/') ||
+    url.pathname.includes('/icons/') ||
     url.pathname.includes('/manifest')
 
   if (cacheable) {

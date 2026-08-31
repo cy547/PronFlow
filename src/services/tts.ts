@@ -182,16 +182,20 @@ const baiduUrl = (text: string) =>
   `https://fanyi.baidu.com/gettts?lan=en&text=${encodeURIComponent(text.trim())}&spd=3&source=web`
 
 /**
- * 云端音频地址链（网页无 Referer 限制，可直连两家）：
- *  - 短文本（≤3 词）：有道真人录音 → 百度
- *  - 句子：百度神经语音（有道不支持长句）→ 有道分段
+ * 云端音频地址链：
+ *  - EdgeOne 部署：/api/tts 代理优先（服务器取音频），失败直连有道/百度
+ *  - 其他托管（如 GitHub Pages）：无后端，直接有道（单词）/ 百度（句子）
  */
 function cloudUrls(text: string, accent: Accent): string[] {
   const t = text.trim()
   const wordCount = t.split(/\s+/).length
-  return wordCount <= 3
-    ? [youdaoUrl(t, accent), baiduUrl(t)]
-    : [baiduUrl(t), youdaoUrl(t, accent)]
+  const onEdge = typeof location !== 'undefined' && /edgeone\./.test(location.hostname)
+  const proxy = onEdge ? `/api/tts?text=${encodeURIComponent(t)}&type=${accent === 'UK' ? 'uk' : 'us'}` : null
+  const direct =
+    wordCount <= 3
+      ? [youdaoUrl(t, accent), baiduUrl(t)]
+      : [baiduUrl(t), youdaoUrl(t, accent)]
+  return proxy ? [proxy, ...direct] : direct
 }
 
 /** 单词(≤3词)→有道真人录音优先；句子→百度神经语音优先；任一失败换下一家 */
