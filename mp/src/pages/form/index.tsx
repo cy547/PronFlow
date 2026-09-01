@@ -66,13 +66,14 @@ export default function FormPage() {
   const [sugs, setSugs] = useState<Sug[] | null>(null)
   const [sugFor, setSugFor] = useState<'en' | 'zh'>('en')
   const sugTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [ipaTouched, setIpaTouched] = useState(!!editing)
 
-  /** 音标自动生成：输入停顿后，逐词查内置词典拼接美式音标（已填则不覆盖） */
+  /** 音标自动生成：输入停顿后，逐词查内置词典拼接美式音标（手动改过则不再覆盖） */
   useEffect(() => {
-    if (type === 'sentence' || editing) return
+    if (type === 'sentence' || editing || ipaTouched) return
     const t = setTimeout(() => {
       const clean = en.trim().replace(/[,.!?;:]+$/g, '')
-      if (!clean || ipaUS.trim()) return
+      if (!clean) return
       const words = clean.split(/\s+/)
       const parts: string[] = []
       for (const w of words) {
@@ -85,7 +86,7 @@ export default function FormPage() {
     }, 400)
     return () => clearTimeout(t)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [en, type])
+  }, [en, type, ipaTouched])
 
   const querySugs = (text: string, from: 'en' | 'zh') => {
     setSugFor(from)
@@ -135,7 +136,10 @@ export default function FormPage() {
       })
       .join(' ')
       .trim()
-    if (ipa) setIpaUS(ipa)
+    if (ipa) {
+      setIpaUS(ipa)
+      setIpaTouched(true)
+    }
   }
 
   const save = () => {
@@ -245,7 +249,7 @@ export default function FormPage() {
         <View className="fi2">
           <View className="fi">
             <Text className="fl">美式音标</Text>
-            <Input value={ipaUS} onInput={(e) => setIpaUS(e.detail.value)} placeholder="/ˈɔːrdər/" />
+            <Input value={ipaUS} onInput={(e) => { setIpaUS(e.detail.value); setIpaTouched(true) }} placeholder="/ˈɔːrdər/" />
           </View>
           <View className="fi">
             <Text className="fl">英式音标</Text>
