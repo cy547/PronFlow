@@ -11,7 +11,8 @@
     "package": "node scripts/make-deploy-zip.cjs",
     "sync-shared": "node scripts/sync-shared.cjs",
     "gen-dict-edge": "node scripts/gen-dict-edge.mjs",
-    "gen-dict-mp": "node scripts/gen-dict-mp.mjs"
+    "gen-dict-mp": "node scripts/gen-dict-mp.mjs",
+    "gen-cmu-ipa": "node scripts/gen-cmu-ipa.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",

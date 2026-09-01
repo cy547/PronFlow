@@ -4,6 +4,7 @@ import Taro, { useRouter } from '@tarojs/taro'
 import type { Material, SentenceMaterial, SpokenLevel, VersionLevel } from '../../shared/types'
 import { DICT } from '../../data/dictData'
 import { actions, useUserData } from '../../store/useUserData'
+import { DICT } from '../../data/dictData'
 import './index.css'
 
 interface Sug {
@@ -101,6 +102,21 @@ export default function FormPage() {
     setIpaUS(d.us ?? '')
     setIpaUK(d.uk ?? '')
     setSugs(null)
+  }
+
+  /** 短语音标自动拼接：逐词查内置离线词典（查不到的词以 ·词· 占位） */
+  const autoGenIpa = () => {
+    const clean = en.trim().replace(/[,.!?;:]+$/g, '')
+    if (!clean) return
+    const ipa = clean
+      .split(/\s+/)
+      .map((w) => {
+        const hit = DICT.find((d) => d.w.toLowerCase() === w.toLowerCase())
+        return hit ? hit.us || hit.uk || '' : `·${w}·`
+      })
+      .join(' ')
+      .trim()
+    if (ipa) setIpaUS(ipa)
   }
 
   const save = () => {
@@ -216,6 +232,11 @@ export default function FormPage() {
             <Text className="fl">英式音标</Text>
             <Input value={ipaUK} onInput={(e) => setIpaUK(e.detail.value)} placeholder="/ˈɔːdə/" />
           </View>
+        </View>
+      )}
+      {type === 'phrase' && en.trim().includes(' ') && (
+        <View className="fi">
+          <Text className="qa-btn" onClick={autoGenIpa}>🪄 按单词自动生成音标（用内置离线词典）</Text>
         </View>
       )}
 
