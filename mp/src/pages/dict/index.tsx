@@ -95,7 +95,7 @@ export default function DictPage() {
         <View className="empty">
           <Text className="ic">📚</Text>
           <Text className="t1">{query ? '没找到相关词条' : '内置离线词典'}</Text>
-          <Text className="t2">{query ? '换个关键词试试' : '8000 高频词离线可查 · 点词条展开详情'}</Text>
+          <Text className="t2">{query ? '换个关键词试试' : '7000 高频词离线可查 · 点词条展开详情'}</Text>
         </View>
       )}
 
