@@ -215,6 +215,7 @@ export function MaterialForm({ sceneId, initial, initialType, onDone }: { sceneI
 
   /* ---------- 词库联想：模糊搜索 → 选中自动带出词性/音标/释义/例句 ---------- */
   const [dictWords, setDictWords] = useState<DictWord[] | null>(null)
+  const [ipaTouched, setIpaTouched] = useState(!!initial)
   const [sugs, setSugs] = useState<DictWord[] | null>(null)
   const [sugFor, setSugFor] = useState<'en' | 'zh'>('en')
 
@@ -250,7 +251,7 @@ export function MaterialForm({ sceneId, initial, initialType, onDone }: { sceneI
     if (type === 'sentence' || initial) return
     const t = setTimeout(async () => {
       const clean = en.trim().replace(/[,.!?;:]+$/g, '')
-      if (!clean || ipaUS.trim() || !dictWords) return
+      if (!clean || ipaTouched || !dictWords) return
       const words = clean.split(/\s+/)
       const parts: string[] = []
       for (const w of words) {
@@ -269,7 +270,7 @@ export function MaterialForm({ sceneId, initial, initialType, onDone }: { sceneI
     }, 450)
     return () => clearTimeout(t)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [en, type, dictWords])
+  }, [en, type, dictWords, ipaTouched])
 
   const valid = en.trim() && zh.trim()
 
@@ -400,11 +401,11 @@ export function MaterialForm({ sceneId, initial, initialType, onDone }: { sceneI
         <div className="form-row2">
           <div className="form-item">
             <label>美式音标</label>
-            <input value={ipaUS} onChange={(e) => setIpaUS(e.target.value)} placeholder="/ˈɔːrdər/" />
+            <input value={ipaUS} onChange={(e) => { setIpaUS(e.target.value); setIpaTouched(true) }} placeholder="/ˈɔːrdər/" />
           </div>
           <div className="form-item">
             <label>英式音标</label>
-            <input value={ipaUK} onChange={(e) => setIpaUK(e.target.value)} placeholder="/ˈɔːdə/" />
+            <input value={ipaUK} onChange={(e) => { setIpaUK(e.target.value); setIpaTouched(true) }} placeholder="/ˈɔːdə/" />
           </div>
         </div>
       )}
