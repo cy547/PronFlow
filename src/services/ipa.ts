@@ -20,6 +20,12 @@ async function ensureCmu(): Promise<Record<string, string>> {
   return cmuPromise
 }
 
+/** 查单个单词的美式音标（CMU 全量）；查不到返回空串 */
+export async function lookupWordIpa(word: string): Promise<string> {
+  const d = await ensureCmu()
+  return d[word.toLowerCase()] ?? ''
+}
+
 /**
  * 按单词逐个拼接美式音标。词表外的词以「·词·」占位（需手补）。
  * 连读/弱读变化不做（拼接为逐词近似音标，供参考发音）。

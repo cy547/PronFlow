@@ -67,6 +67,26 @@ export default function FormPage() {
   const [sugFor, setSugFor] = useState<'en' | 'zh'>('en')
   const sugTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
+  /** 音标自动生成：输入停顿后，逐词查内置词典拼接美式音标（已填则不覆盖） */
+  useEffect(() => {
+    if (type === 'sentence' || editing) return
+    const t = setTimeout(() => {
+      const clean = en.trim().replace(/[,.!?;:]+$/g, '')
+      if (!clean || ipaUS.trim()) return
+      const words = clean.split(/\s+/)
+      const parts: string[] = []
+      for (const w of words) {
+        const hit = DICT.find((d) => d.w.toLowerCase() === w.toLowerCase())
+        if (!hit || !(hit.us || hit.uk)) return // 有词查不到 → 不自动填，交给手动/按钮
+        parts.push(hit.us || hit.uk)
+      }
+      const ipa = parts.join(' ')
+      if (ipa) setIpaUS(ipa)
+    }, 400)
+    return () => clearTimeout(t)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [en, type])
+
   const querySugs = (text: string, from: 'en' | 'zh') => {
     setSugFor(from)
     const q = text.trim().toLowerCase()

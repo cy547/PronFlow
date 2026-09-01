@@ -4,6 +4,7 @@ import type { DictWord, Material, Scene, SentenceMaterial, SpokenLevel, VersionL
 import { useUser } from '../store/UserDataProvider'
 import { loadDict } from '../services/dict'
 import { colloquialZh, searchDictForForm, suggestEnNames } from '../services/suggest'
+import { lookupWordIpa } from '../services/ipa'
 import { Sheet } from '../components/Sheet'
 import { SceneIcon } from './SceneIcon'
 
@@ -243,6 +244,35 @@ export function MaterialForm({ sceneId, initial, initialType, onDone }: { sceneI
     if (sp?.variants?.length) setVarRows(sp.variants.map((v) => ({ level: v.level, en: v.en, zh: v.zh })))
     setSugs(null)
   }
+
+    setSugs(null)
+  }
+
+  /** 音标自动生成：输入停顿后逐词查词典（18746 词典 → CMU 全量兜底），已填不覆盖 */
+  useEffect(() => {
+    if (type === 'sentence' || initial) return
+    const t = setTimeout(async () => {
+      const clean = en.trim().replace(/[,.!?;:]+$/g, '')
+      if (!clean || ipaUS.trim() || !dictWords) return
+      const words = clean.split(/\s+/)
+      const parts: string[] = []
+      for (const w of words) {
+        const wl = w.toLowerCase()
+        const hit = dictWords.find((d) => d.w.toLowerCase() === wl)
+        if (hit?.us) {
+          parts.push(hit.us)
+          continue
+        }
+        const cmuIpa = await lookupWordIpa(wl)
+        if (!cmuIpa) return // 有词查不到 → 不自动填，交给手动
+        parts.push(cmuIpa)
+      }
+      const ipa = parts.join(' ').trim()
+      if (ipa) setIpaUS(ipa)
+    }, 450)
+    return () => clearTimeout(t)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [en, type, dictWords])
 
   const valid = en.trim() && zh.trim()
 
