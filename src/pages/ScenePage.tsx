@@ -49,11 +49,9 @@ export function ScenePage({ sceneId }: { sceneId: string }) {
         <button className="back" onClick={nav.back}>←</button>
         <div className="title">
           <SceneIcon icon={scene.icon} size={22} />
-          <span style={{ whiteSpace: 'nowrap' }}>{scene.name}</span>
+          <span className="t-name">{scene.name}</span>
           <span className="t-en">{scene.nameEn}</span>
         </div>
-        <button className="action plain" onClick={() => setAdding('word')}>＋ 添加</button>
-        <button className="action plain" title="导出本场景 PDF" onClick={() => setShowPdf(true)}>📄</button>
         <button className="action" onClick={() => nav.openTrain(sceneId)}>🎯 训练</button>
       </div>
 
@@ -62,6 +60,7 @@ export function ScenePage({ sceneId }: { sceneId: string }) {
         <button onClick={() => setAdding('word')}>＋ 单词</button>
         <button onClick={() => setAdding('phrase')}>＋ 短语</button>
         <button onClick={() => setAdding('sentence')}>＋ 句子</button>
+        <button title="导出本场景 PDF" onClick={() => setShowPdf(true)}>📄 PDF</button>
       </div>
 
       <button className="train-entry" onClick={() => nav.openTrain(sceneId)}>
