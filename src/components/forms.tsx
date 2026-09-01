@@ -245,9 +245,6 @@ export function MaterialForm({ sceneId, initial, initialType, onDone }: { sceneI
     setSugs(null)
   }
 
-    setSugs(null)
-  }
-
   /** 音标自动生成：输入停顿后逐词查词典（18746 词典 → CMU 全量兜底），已填不覆盖 */
   useEffect(() => {
     if (type === 'sentence' || initial) return
