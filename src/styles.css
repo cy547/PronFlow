@@ -1667,12 +1667,14 @@ select {
 
 @media print {
   @page {
-    size: A4;
+    size: A4 portrait;
     margin: 11mm;
   }
 
+  /* 手机打印按屏幕宽度排版会挤在左侧：强制按 A4 纸宽布局 */
   html,
   body {
+    width: 210mm !important;
     background: #fff !important;
   }
 
@@ -1682,6 +1684,8 @@ select {
 
   .print-root {
     display: block !important;
+    width: 210mm;
+    box-sizing: border-box;
     font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif;
     color: #1a1d21;
     -webkit-print-color-adjust: exact;
