@@ -4,7 +4,6 @@ import Taro, { useRouter } from '@tarojs/taro'
 import type { Material, SentenceMaterial, SpokenLevel, VersionLevel } from '../../shared/types'
 import { DICT } from '../../data/dictData'
 import { actions, useUserData } from '../../store/useUserData'
-import { DICT } from '../../data/dictData'
 import './index.css'
 
 interface Sug {
