@@ -135,13 +135,13 @@ function SelfTest({ all }: { all: Material[] }) {
           {m.variants.length > 0 && (
             <div className="alt">
               {m.variants.slice(0, 2).map((v, i) => (
-                <div className="var-row" key={i} onClick={() => void play(v.en, { rate: 0.9 })}>
+                <button className="var-row" key={i} onClick={() => void play(v.en, { rate: 0.9 })} aria-label={`播放替换说法 ${v.en}`}>
                   <span className="badge ver">{v.level}</span>
                   <div style={{ flex: 1 }}>
                     <div className="v-en">{v.en}</div>
                     <div className="v-zh">{v.zh}</div>
                   </div>
-                </div>
+                </button>
               ))}
             </div>
           )}
@@ -224,13 +224,13 @@ function FollowRead({ all }: { all: Material[] }) {
           <div className="d-label">✂️ 逐段跟读（点一段播一段）</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {m.breakdown.map((b, i) => (
-              <div className="brk-row" key={i} onClick={() => void play(b.en, { rate: 0.6 })}>
+              <button className="brk-row" key={i} onClick={() => void play(b.en, { rate: 0.6 })} aria-label={`播放拆分段落 ${b.en}`}>
                 <span className="idx">{i + 1}</span>
                 <div style={{ flex: 1 }}>
                   <div className="e">{b.en}</div>
                   <div className="z">{b.zh}</div>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </div>
@@ -323,10 +323,10 @@ function Imitate({ all, focusMaterialId }: { all: Material[]; focusMaterialId?: 
         ))}
       </div>
 
-      <div className="compose" onClick={() => void play(composed, { accent: data.settings.accent })}>
+      <button className="compose" onClick={() => void play(composed, { accent: data.settings.accent })} aria-label="播放仿写句">
         {composed}
         <div className="fs12" style={{ color: 'var(--brand-deep)', fontWeight: 400, marginTop: 4 }}>👆 点一下听效果</div>
-      </div>
+      </button>
 
       <div className="train-btn">
         <button className="btn-main" onClick={next}>换一个句式 →</button>

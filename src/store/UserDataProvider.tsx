@@ -6,7 +6,7 @@ import { addDays, todayStr } from '../types'
 const KEY = 'pronflow-userdata-v1'
 
 const DEFAULT_DATA: UserData = {
-  settings: { accent: 'US', rate: 'normal', voiceSource: 'cloud' },
+  settings: { accent: 'US', rate: 'normal', voiceSource: 'cloud', theme: 'auto' },
   pinned: [],
   customScenes: [],
   customMaterials: [],
@@ -77,6 +77,13 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
       /* 容量满等情况静默 */
     }
   }, [data])
+
+  /** 主题应用：把设置写到 <html data-theme>（auto 时清除交给 CSS 媒体查询） */
+  useEffect(() => {
+    const el = document.documentElement
+    if (data.settings.theme === 'auto') el.removeAttribute('data-theme')
+    else el.setAttribute('data-theme', data.settings.theme)
+  }, [data.settings.theme])
 
   /** 连续打卡：日期变化时更新 streak */
   useEffect(() => {

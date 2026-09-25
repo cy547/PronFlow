@@ -136,6 +136,8 @@ export interface Settings {
   rate: 'normal' | 'slow'
   /** 发音音源：cloud=有道云端真人声（默认，需联网） / system=系统 TTS（离线可用） */
   voiceSource: 'cloud' | 'system'
+  /** 外观主题：auto=跟随系统（默认）/ light / dark */
+  theme: 'auto' | 'light' | 'dark'
 }
 
 export interface UserData {

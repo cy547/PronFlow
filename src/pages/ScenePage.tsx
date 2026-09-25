@@ -9,6 +9,7 @@ import { MaterialForm } from '../components/forms'
 import { Sheet } from '../components/Sheet'
 import { SceneIcon } from '../components/SceneIcon'
 import { PrintView } from '../components/PrintView'
+import { confirmEx } from '../components/Confirm'
 
 type Tab = 'word' | 'phrase' | 'sentence'
 
@@ -98,8 +99,9 @@ export function ScenePage({ sceneId }: { sceneId: string }) {
             m={m}
             onTrain={(mm) => nav.openTrain(mm.sceneId, 3, mm.id)}
             onEdit={(mm) => setEditing(mm)}
-            onDelete={(mm) => {
-              if (confirm(`删除「${mm.en}」？`)) deleteCustomMaterial(mm.id)
+            onDelete={async (mm) => {
+              const ok = await confirmEx({ title: '删除内容', content: `删除「${mm.en}」？`, danger: true })
+              if (ok) deleteCustomMaterial(mm.id)
             }}
           />
         ))

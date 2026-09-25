@@ -10,6 +10,8 @@ import { SearchPage } from './pages/SearchPage'
 import { ReviewPage } from './pages/ReviewPage'
 import { MinePage } from './pages/MinePage'
 import { onTTSError, primeTTS } from './services/tts'
+import { ErrorBoundary } from './components/ErrorBoundary'
+import { ConfirmHost } from './components/Confirm'
 
 const IS_IOS = /iphone|ipad|ipod/i.test(navigator.userAgent)
 
@@ -99,8 +101,11 @@ export default function App() {
   return (
     <NavCtx.Provider value={{ tab, goTab, push, back, openTrain }}>
       <div className="phone">
+        <ErrorBoundary>
         {content}
         {!top && <TabBar tab={tab} onTap={goTab} />}
+        <ConfirmHost />
+        </ErrorBoundary>
         {ttsErr && (
           <div className="tts-toast" onClick={() => setTtsErr(null)}>
             🔊 {ttsErr}

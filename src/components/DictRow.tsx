@@ -62,10 +62,10 @@ export function DictRow({ d, defaultOpen = false }: { d: DictWord; defaultOpen?:
               {d.spoken.examples?.map((ex, i) => (
                 <div className="dlg" key={i}>
                   <div className="who">{i % 2 === 0 ? '🗣️' : '🙋'}</div>
-                  <div className="bubble" onClick={() => void play(ex.en, { accent: data.settings.accent })}>
+                  <button className="bubble" onClick={() => void play(ex.en, { accent: data.settings.accent })} aria-label={`播放例句 ${ex.en}`}>
                     <div className="e">{ex.en}</div>
                     <div className="z">{ex.zh}</div>
-                  </div>
+                  </button>
                 </div>
               ))}
               {d.spoken.variants && (
@@ -73,13 +73,13 @@ export function DictRow({ d, defaultOpen = false }: { d: DictWord; defaultOpen?:
                   <div className="d-label">🔄 换个说法</div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                     {d.spoken.variants.map((v, i) => (
-                      <div className="var-row" key={i} onClick={() => void play(v.en, { accent: data.settings.accent })}>
+                      <button className="var-row" key={i} onClick={() => void play(v.en, { accent: data.settings.accent })} aria-label={`播放替换说法 ${v.en}`}>
                         <span className="badge ver">{v.level}</span>
                         <div style={{ flex: 1 }}>
                           <div className="v-en">{v.en}</div>
                           <div className="v-zh">{v.zh}</div>
                         </div>
-                      </div>
+                      </button>
                     ))}
                   </div>
                 </div>

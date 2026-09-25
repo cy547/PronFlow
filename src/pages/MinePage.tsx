@@ -6,6 +6,7 @@ import { DAILY_REVIEW_CAP } from '../store/UserDataProvider'
 import { canInstall, onInstallAvailable, promptInstall } from '../pwa'
 import { PrintView } from '../components/PrintView'
 import { AccountCard } from '../components/AccountCard'
+import { confirmEx } from '../components/Confirm'
 
 export function MinePage() {
   const { data, setSettings, exportJSON, importJSON, resetAll } = useUser()
@@ -35,7 +36,7 @@ export function MinePage() {
     const reader = new FileReader()
     reader.onload = () => {
       const ok = importJSON(String(reader.result))
-      alert(ok ? '导入成功' : '文件格式不对，导入失败')
+      void confirmEx({ title: ok ? '导入成功' : '导入失败', content: ok ? '备份内容已恢复到本机' : '文件格式不对，请检查备份文件' })
     }
     reader.readAsText(file)
   }
@@ -77,6 +78,15 @@ export function MinePage() {
           <div className="radio-pill">
             <button className={data.settings.accent === 'US' ? 'on' : ''} onClick={() => setSettings({ accent: 'US' })}>美音</button>
             <button className={data.settings.accent === 'UK' ? 'on' : ''} onClick={() => setSettings({ accent: 'UK' })}>英音</button>
+          </div>
+        </div>
+        <div className="mine-row" style={{ cursor: 'default' }}>
+          <span className="ic">🌙</span>
+          <span className="lb">外观</span>
+          <div className="radio-pill">
+            <button className={data.settings.theme === 'auto' ? 'on' : ''} onClick={() => setSettings({ theme: 'auto' })}>跟随系统</button>
+            <button className={data.settings.theme === 'light' ? 'on' : ''} onClick={() => setSettings({ theme: 'light' })}>浅色</button>
+            <button className={data.settings.theme === 'dark' ? 'on' : ''} onClick={() => setSettings({ theme: 'dark' })}>深色</button>
           </div>
         </div>
         <div className="mine-row" style={{ cursor: 'default' }}>
@@ -158,8 +168,9 @@ export function MinePage() {
         <button
           className="mine-row"
           style={{ width: '100%', textAlign: 'left', color: 'var(--red)' }}
-          onClick={() => {
-            if (confirm('清空全部本地数据（收藏、自定义、复习记录、设置）？此操作不可恢复。')) resetAll()
+          onClick={async () => {
+            const ok = await confirmEx({ title: '清空本地数据', content: '将清空收藏、自定义、复习记录与设置，此操作不可恢复。', danger: true })
+            if (ok) resetAll()
           }}
         >
           <span className="ic">🗑</span>

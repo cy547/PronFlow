@@ -6,6 +6,7 @@ import { useUser } from '../store/UserDataProvider'
 import { useNav } from '../nav'
 import { Sheet } from '../components/Sheet'
 import { SceneForm } from '../components/forms'
+import { confirmEx } from '../components/Confirm'
 import { SceneIcon } from '../components/SceneIcon'
 
 export function HomePage() {
@@ -44,7 +45,9 @@ export function HomePage() {
           className="menu"
           onClick={(e) => {
             e.stopPropagation()
-            setMenuScene(s)
+            void (async () => {
+              setMenuScene(s)
+            })()
           }}
         >
           ⋯
@@ -118,10 +121,9 @@ export function HomePage() {
               <button
                 className="mine-row"
                 style={{ color: 'var(--red)' }}
-                onClick={() => {
-                  if (confirm(`删除场景「${menuScene.name}」及其全部内容？`)) {
-                    deleteCustomScene(menuScene.id)
-                  }
+                onClick={async () => {
+                  const ok = await confirmEx({ title: '删除场景', content: `删除「${menuScene.name}」及其全部内容？`, danger: true })
+                  if (ok) deleteCustomScene(menuScene.id)
                   setMenuScene(null)
                 }}
               >

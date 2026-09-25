@@ -43,10 +43,10 @@ export function MaterialCard({ m, defaultOpen = false, onTrain, onEdit, onDelete
           {ipaShow && (m.ipaUS || m.ipaUK) && (
             <div className="ipa">
               {m.ipaUS && (
-                <span className="us" onClick={ipaTap('US')}>{m.ipaUS}</span>
+                <button className="us" onClick={ipaTap('US')} aria-label={`播放美式发音 ${m.en}`}>{m.ipaUS}</button>
               )}
               {m.ipaUK && (
-                <span className="uk" onClick={ipaTap('UK')}>{m.ipaUK}</span>
+                <button className="uk" onClick={ipaTap('UK')} aria-label={`播放英式发音 ${m.en}`}>{m.ipaUK}</button>
               )}
               {m.type === 'word' && m.pos && <span>{m.pos}</span>}
             </div>
@@ -91,10 +91,10 @@ export function MaterialCard({ m, defaultOpen = false, onTrain, onEdit, onDelete
                 {m.examples.map((ex, i) => (
                   <div className="dlg" key={i}>
                     <div className="who">{i % 2 === 0 ? '🗣️' : '🙋'}</div>
-                    <div className="bubble" onClick={() => void play(ex.en, { accent: data.settings.accent })}>
+                    <button className="bubble" onClick={() => void play(ex.en, { accent: data.settings.accent })} aria-label={`播放例句 ${ex.en}`}>
                       <div className="e">{ex.en}</div>
                       <div className="z">{ex.zh}</div>
-                    </div>
+                    </button>
                   </div>
                 ))}
               </div>
@@ -108,13 +108,13 @@ export function MaterialCard({ m, defaultOpen = false, onTrain, onEdit, onDelete
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                 {m.variants.map((v, i) => (
-                  <div className="var-row" key={i} onClick={() => void play(v.en, { accent: data.settings.accent })}>
+                  <button className="var-row" key={i} onClick={() => void play(v.en, { accent: data.settings.accent })} aria-label={`播放替换说法 ${v.en}`}>
                     <span className="badge ver">{v.level}</span>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div className="v-en">{v.en}</div>
                       <div className="v-zh">{v.zh}</div>
                     </div>
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>
@@ -127,13 +127,13 @@ export function MaterialCard({ m, defaultOpen = false, onTrain, onEdit, onDelete
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                 {m.breakdown.map((b, i) => (
-                  <div className="brk-row" key={i} onClick={() => void play(b.en, { accent: data.settings.accent, rate: 0.8 })}>
+                  <button className="brk-row" key={i} onClick={() => void play(b.en, { accent: data.settings.accent, rate: 0.8 })} aria-label={`播放拆分段落 ${b.en}`}>
                     <span className="idx">{i + 1}</span>
                     <div style={{ flex: 1 }}>
                       <div className="e">{b.en}</div>
                       <div className="z">{b.zh}</div>
                     </div>
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>
