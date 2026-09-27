@@ -89,6 +89,19 @@
 .act { font-size: 13px; color: #4a86e8; }
 .act.del { color: #ff6b6b; }
 
-.quick-add { display: flex; align-items: center; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
-.qa-label { font-size: 12px; color: #7a828a; }
-.qa-btn { font-size: 12.5px; color: #0e9e73; font-weight: 600; background: #fff; border-radius: 14px; padding: 5px 11px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.quick-add { display: flex; align-items: center; gap: 8px; margin-top: 14px; }
+.qa-label { font-size: 12px; color: #7a828a; flex-shrink: 0; }
+.qa-btn {
+  flex: 1;
+  text-align: center;
+  font-size: 12.5px;
+  color: #0e9e73;
+  font-weight: 600;
+  background: #fff;
+  border-radius: 14px;
+  padding: 7px 0;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
