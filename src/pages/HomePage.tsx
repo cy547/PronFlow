@@ -7,6 +7,8 @@ import { useNav } from '../nav'
 import { Sheet } from '../components/Sheet'
 import { SceneForm } from '../components/forms'
 import { confirmEx } from '../components/Confirm'
+import { DailyCard } from '../components/DailyCard'
+import { encodeScenePack } from '../services/share'
 import { SceneIcon } from '../components/SceneIcon'
 
 export function HomePage() {
@@ -67,6 +69,8 @@ export function HomePage() {
         <span>🔍</span>
         <span>输入你心里想说的中文，帮你找到那句英文…</span>
       </button>
+
+      <DailyCard />
 
       {pinnedScenes.length > 0 && (
         <>

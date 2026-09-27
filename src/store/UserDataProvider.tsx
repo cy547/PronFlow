@@ -21,7 +21,7 @@ function load(): UserData {
     const raw = localStorage.getItem(KEY)
     if (!raw) return { ...DEFAULT_DATA }
     const parsed = JSON.parse(raw)
-    return { ...DEFAULT_DATA, ...parsed, stats: { ...DEFAULT_DATA.stats, ...(parsed.stats || {}) } }
+    return { ...DEFAULT_DATA, ...parsed, stats: { ...DEFAULT_DATA.stats, ...(parsed.stats || {}) }, daily: parsed.daily ?? {} }
   } catch {
     return { ...DEFAULT_DATA }
   }
@@ -217,7 +217,10 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
 }
 
 function bumpStats(d: UserData, k: 'tests' | 'reviews'): UserData {
-  return { ...d, stats: { ...d.stats, [k]: d.stats[k] + 1 } }
+  const today = todayStr()
+  const daily = { ...(d.daily ?? {}) }
+  daily[today] = (daily[today] ?? 0) + 1
+  return { ...d, daily, stats: { ...d.stats, [k]: d.stats[k] + 1 } }
 }
 
 export function useUser(): Ctx {

@@ -9,6 +9,7 @@ import { LinkingLegend, LinkingText } from '../components/LinkingText'
 import { LoopButton, SlowButton } from '../components/AudioButton'
 import { VoiceRecorder } from '../components/VoiceRecorder'
 import { LEVEL_NAME } from '../components/MaterialCard'
+import { SpeechCompare } from '../components/SpeechCompare'
 
 type Mode = 1 | 2 | 3
 type KindFilter = 'all' | 'word' | 'phrase' | 'sentence'

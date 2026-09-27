@@ -156,6 +156,8 @@ export interface UserData {
     lastActive: string
     streak: number
   }
+  /** 每日活动：日期 → 开口次数（自测+复习） */
+  daily?: Record<string, number>
 }
 
 export const todayStr = (): string => {

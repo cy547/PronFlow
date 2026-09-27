@@ -2077,3 +2077,70 @@ textarea:focus-visible,
   font-size: 15px;
   margin-top: 0;
 }
+
+/* ---------- 开口比对 ---------- */
+.sp-comp .sp-result { display: flex; flex-direction: column; gap: 8px; animation: fadeUp 0.25s; }
+.sp-score { display: flex; align-items: baseline; gap: 10px; }
+.sp-score .good { color: var(--brand-deep); font-size: 24px; font-weight: 800; }
+.sp-score .mid { color: var(--warn-deep); font-size: 24px; font-weight: 800; }
+.sp-score .low { color: var(--red); font-size: 24px; font-weight: 800; }
+.sp-score-tip { font-size: 12.5px; color: var(--sub); }
+.sp-tokens { display: flex; flex-wrap: wrap; gap: 5px; }
+.sp-tok { padding: 3px 9px; border-radius: 7px; font-size: 14px; font-weight: 600; }
+.sp-tok.ok { background: var(--brand-soft); color: var(--brand-deep); }
+.sp-tok.miss { background: var(--red-soft); color: var(--red); text-decoration: line-through; opacity: 0.75; }
+.sp-raw { font-size: 11.5px; color: var(--sub); }
+.sp-err { font-size: 12.5px; color: var(--red); }
+.rec-live { background: var(--red-soft); color: var(--red); }
+.rec-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--red); margin-right: 6px; animation: pulse 1s infinite; }
+
+/* ---------- 每日一句 ---------- */
+.daily-card {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  background: linear-gradient(135deg, #fff 0%, var(--brand-soft) 100%);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 13px 15px;
+  text-align: left;
+  cursor: pointer;
+}
+.daily-head { display: flex; justify-content: space-between; align-items: center; }
+.daily-badge {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--brand-deep);
+  background: var(--brand-soft);
+  border-radius: 5px;
+  padding: 1px 6px;
+}
+.daily-scene { font-size: 10.5px; color: var(--sub); }
+.daily-en { margin-top: 7px; font-size: 16.5px; font-weight: 800; line-height: 1.4; }
+.daily-zh { margin-top: 3px; font-size: 12.5px; color: var(--sub); }
+.daily-tip { margin-top: 7px; font-size: 10.5px; color: var(--sub); opacity: 0.8; }
+
+/* ---------- 热力图 ---------- */
+.heat-head { display: flex; justify-content: space-between; font-size: 12px; color: var(--sub); margin-bottom: 8px; }
+.heat-active { color: var(--brand-deep); font-weight: 600; }
+.heat-grid { display: flex; flex-direction: column; gap: 3px; }
+.heat-row { display: flex; gap: 3px; }
+.heat-cell {
+  width: 15px; height: 15px; border-radius: 3px;
+  background: var(--fill); display: inline-block;
+}
+.heat-cell.l1 { background: #c8ecdf; }
+.heat-cell.l2 { background: #7fd6b7; }
+.heat-cell.l3 { background: #3cb891; }
+.heat-cell.l4 { background: var(--brand-deep); }
+[data-theme='dark'] .heat-cell.l1 { background: #1c3a2f; }
+[data-theme='dark'] .heat-cell.l2 { background: #1e5c47; }
+[data-theme='dark'] .heat-cell.l3 { background: #178a67; }
+.heat-legend { display: flex; align-items: center; gap: 3px; font-size: 10px; color: var(--sub); margin-top: 6px; }
+
+/* ---------- 分享导入 ---------- */
+.share-box { padding: 4px 16px 14px; display: flex; flex-direction: column; gap: 8px; }
+.share-box input {
+  background: var(--fill-3); border-radius: 10px; height: 38px;
+  padding: 0 12px; font-size: 12px; color: var(--ink);
+}

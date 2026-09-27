@@ -6,14 +6,18 @@ import { DAILY_REVIEW_CAP } from '../store/UserDataProvider'
 import { canInstall, onInstallAvailable, promptInstall } from '../pwa'
 import { PrintView } from '../components/PrintView'
 import { AccountCard } from '../components/AccountCard'
+import { Heatmap } from '../components/Heatmap'
+import { decodeScenePack } from '../services/share'
 import { confirmEx } from '../components/Confirm'
 
 export function MinePage() {
-  const { data, setSettings, exportJSON, importJSON, resetAll } = useUser()
+  const { data, setSettings, exportJSON, importJSON, resetAll, addCustomScene, addCustomMaterial } = useUser()
   const fileRef = useRef<HTMLInputElement>(null)
   const voices = listVoices()
   const [installable, setInstallable] = useState(canInstall())
   const [showPdf, setShowPdf] = useState(false)
+  const [shareCode, setShareCode] = useState('')
+  const [showShare, setShowShare] = useState(false)
 
   useEffect(() => onInstallAvailable(setInstallable), [])
 
@@ -48,6 +52,20 @@ export function MinePage() {
       </div>
 
       <AccountCard />
+
+      <div className="mine-card">
+        <div className="mc-title">学习热力</div>
+        <div style={{ padding: '0 16px 14px' }}>
+          <Heatmap daily={data.daily ?? {}} />
+        </div>
+      </div>
+
+      <div className="mine-card">
+        <div className="mc-title">学习热力</div>
+        <div style={{ padding: '0 16px 14px' }}>
+          <Heatmap daily={data.daily ?? {}} />
+        </div>
+      </div>
 
       <div className="mine-card">
         <div className="stat-grid">
@@ -165,6 +183,44 @@ export function MinePage() {
             e.target.value = ''
           }}
         />
+        <button
+          className="mine-row"
+          onClick={() => setShowShare(!showShare)}
+          style={{ width: '100%', textAlign: 'left' }}
+        >
+          <span className="ic">🎁</span>
+          <span className="lb">导入场景包（粘贴好友的分享码）</span>
+          <span className="arrow">→</span>
+        </button>
+        {showShare && (
+          <div className="share-box">
+            <input
+              value={shareCode}
+              onChange={(e) => setShareCode(e.target.value)}
+              placeholder="粘贴分享码（PF1- 开头）"
+            />
+            <button
+              className="btn-main"
+              style={{ height: 38, fontSize: 13 }}
+              disabled={!shareCode.trim()}
+              onClick={() => {
+                const pack = decodeScenePack(shareCode)
+                if (!pack) {
+                  void confirmEx({ title: '导入失败', content: '分享码格式不对，请确认复制完整' })
+                  return
+                }
+                addCustomScene({ id: `cs-${Date.now()}`, name: pack.scene.name, nameEn: pack.scene.nameEn, icon: pack.scene.icon, desc: pack.scene.desc })
+                for (const mat of pack.materials) {
+                  addCustomMaterial({ ...mat, id: `im-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`, sceneId: pack.scene.id, custom: true })
+                }
+                setShareCode('')
+                void confirmEx({ title: '导入成功', content: `场景「${pack.scene.name}」（${pack.materials.length} 条内容）已加入场景列表` })
+              }}
+            >
+              导入
+            </button>
+          </div>
+        )}
         <button
           className="mine-row"
           style={{ width: '100%', textAlign: 'left', color: 'var(--red)' }}
