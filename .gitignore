@@ -20,3 +20,4 @@ mp/.swc/
 *.key
 .zcode/
 tsconfig.tsbuildinfo
+*.tmp.json
