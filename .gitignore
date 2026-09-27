@@ -21,3 +21,4 @@ mp/.swc/
 .zcode/
 tsconfig.tsbuildinfo
 *.tmp.json
+jsons-temp/
