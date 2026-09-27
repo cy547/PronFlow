@@ -61,13 +61,6 @@ export function MinePage() {
       </div>
 
       <div className="mine-card">
-        <div className="mc-title">学习热力</div>
-        <div style={{ padding: '0 16px 14px' }}>
-          <Heatmap daily={data.daily ?? {}} />
-        </div>
-      </div>
-
-      <div className="mine-card">
         <div className="stat-grid">
           <div className="st">
             <b>{Object.keys(data.favorites).length}</b>
