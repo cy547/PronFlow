@@ -12,7 +12,7 @@ permissions:
 
 concurrency:
   group: github-pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -38,4 +38,10 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
+        uses: actions/deploy-pages@v4
+      # 平台自带的 Jekyll 分支部署会同时触发并可能后落地覆盖（部署源码导致白屏）。
+      # 等它落地后再次部署我们的产物，保证最后一次生效的一定是正确构建。
+      - name: Wait for legacy Jekyll deploy to pass
+        run: sleep 110
+      - id: deployment2
         uses: actions/deploy-pages@v4
