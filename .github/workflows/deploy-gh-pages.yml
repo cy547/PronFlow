@@ -23,15 +23,9 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
-      # 发布到 gh-pages 分支（Pages Source 设为该分支即可，与 Jekyll 部署目标一致，永不冲突）
-      - name: Push dist to gh-pages
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
-          git checkout gh-pages 2>/dev/null || git checkout --orphan gh-pages
-          git rm -rf . 2>/dev/null || true
-          cp -r dist/* .
-          git add -A
-          git commit -m "deploy: ${{ github.sha }}" || echo "nothing to commit"
-          git push origin gh-pages --force
+      - uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          force_orphan: true
+          commit_message: deploy: ${{ github.sha }}
