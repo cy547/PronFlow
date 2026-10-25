@@ -46,6 +46,7 @@ interface Ctx {
   updateCustomMaterial: (id: string, patch: Partial<Material>) => void
   deleteCustomMaterial: (id: string) => void
   /* 收藏 */
+  setFavTags: (key: string, tags: string[]) => void
   favKey: (kind: FavKind, id: string) => string
   isFav: (kind: FavKind, id: string) => boolean
   toggleFav: (args: { kind: FavKind; id: string; en: string; zh: string; sceneId?: string }) => void
@@ -126,6 +127,7 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
         next: result === undefined ? todayStr() : addDays(interval),
         interval,
         streak,
+        stuck: result === 'again' ? (prev?.stuck ?? 0) + 1 : (prev?.stuck ?? 0),
         updatedAt: Date.now(),
       }
       return { ...d, review: { ...d.review, [key]: next } }
@@ -162,6 +164,12 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
         patch((d) => ({ ...d, customMaterials: d.customMaterials.map((m) => (m.id === id ? ({ ...m, ...p } as Material) : m)) })),
       deleteCustomMaterial: (id) => patch((d) => ({ ...d, customMaterials: d.customMaterials.filter((m) => m.id !== id) })),
 
+      setFavTags: (key, tags) =>
+        patch((d) => {
+          const fav = d.favorites[key]
+          if (!fav) return d
+          return { ...d, favorites: { ...d.favorites, [key]: { ...fav, tags: tags.length ? tags : undefined } } }
+        }),
       favKey,
       isFav: (kind, id) => !!data.favorites[favKey(kind, id)],
       toggleFav: (args) =>

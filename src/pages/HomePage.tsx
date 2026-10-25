@@ -9,6 +9,7 @@ import { SceneForm } from '../components/forms'
 import { confirmEx } from '../components/Confirm'
 import { DailyCard } from '../components/DailyCard'
 import { encodeScenePack } from '../services/share'
+import { MasteryBar } from '../components/MasteryBar'
 import { SceneIcon } from '../components/SceneIcon'
 
 export function HomePage() {
@@ -43,6 +44,7 @@ export function HomePage() {
         </div>
         <div className="name">{s.name}</div>
         <div className="meta">词 {c.word} · 短语 {c.phrase} · 句 {c.sentence}</div>
+        <MasteryBar sceneId={s.id} total={c.word + c.phrase + c.sentence} />
         <span
           className="menu"
           onClick={(e) => {

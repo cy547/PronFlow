@@ -63,6 +63,18 @@ export function MaterialCard({ m, defaultOpen = false, onTrain, onEdit, onDelete
           <div className="mini-acts">
             <LoopButton text={m.en} />
             <SlowButton text={m.en} />
+            {onTrain && (
+              <button
+                title="去跟读这句"
+                aria-label="去跟读这句"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onTrain(m)
+                }}
+              >
+                🎯
+              </button>
+            )}
             <StarButton
               on={fav}
               onTap={() => toggleFav({ kind: m.type, id: m.id, en: m.en, zh: m.zh, sceneId: m.sceneId })}

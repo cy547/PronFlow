@@ -115,7 +115,7 @@ export function SearchPage() {
             <div className="search-sec">
               <div className="sec-h">🔤 单词 <span className="n">{results.words.total} 条</span></div>
               {results.words.items.map((m) => (
-                <MaterialCard key={m.id} m={m} onTrain={(mm) => nav.openTrain(mm.sceneId, 3, mm.id)} />
+                <MaterialCard key={m.id} m={m} onTrain={(mm) => nav.openTrain(mm.sceneId, mm.type === 'sentence' ? 2 : 1, mm.id)} />
               ))}
             </div>
           )}
@@ -124,7 +124,7 @@ export function SearchPage() {
             <div className="search-sec">
               <div className="sec-h">🧷 短语 <span className="n">{results.phrases.total} 条</span></div>
               {results.phrases.items.map((m) => (
-                <MaterialCard key={m.id} m={m} onTrain={(mm) => nav.openTrain(mm.sceneId, 3, mm.id)} />
+                <MaterialCard key={m.id} m={m} onTrain={(mm) => nav.openTrain(mm.sceneId, mm.type === 'sentence' ? 2 : 1, mm.id)} />
               ))}
             </div>
           )}
@@ -133,7 +133,7 @@ export function SearchPage() {
             <div className="search-sec">
               <div className="sec-h">💬 句子 <span className="n">{results.sentences.total} 条</span></div>
               {results.sentences.items.map((m) => (
-                <MaterialCard key={m.id} m={m} onTrain={(mm) => nav.openTrain(mm.sceneId, 3, mm.id)} />
+                <MaterialCard key={m.id} m={m} onTrain={(mm) => nav.openTrain(mm.sceneId, mm.type === 'sentence' ? 2 : 1, mm.id)} />
               ))}
             </div>
           )}

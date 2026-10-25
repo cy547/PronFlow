@@ -111,6 +111,8 @@ export interface FavEntry {
   key: string
   kind: FavKind
   addedAt: number
+  /** 用户自定义分组标签 */
+  tags?: string[]
 }
 
 /** 复习条目：带快照，不依赖收藏与词库加载 */
@@ -127,6 +129,8 @@ export interface ReviewItem {
   interval: number
   /** 连续答对次数 */
   streak: number
+  /** 卡住次数（自测/复习中点"卡住"的累计，用于弱点训练） */
+  stuck?: number
   /** 最近一次更新时间（云端合并用） */
   updatedAt?: number
 }
